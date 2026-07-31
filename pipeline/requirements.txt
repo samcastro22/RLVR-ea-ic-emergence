@@ -1,0 +1,27 @@
+# Install these first:
+#   pip install -r requirements.txt
+#
+# Then install vLLM separately, in exactly this order and version. vLLM
+# 0.20.0 and later default to a CUDA 13.0 build, which can silently break
+# if the environment's own torch build is on an earlier CUDA version
+# (torch itself is not pinned above, since the correct version depends
+# on what CUDA build this vLLM version needs). Installing base
+# requirements first, then force-reinstalling vLLM without its own
+# dependency resolution, then reinstalling normally, makes vLLM's pinned
+# torch/torchvision/torchaudio versions the final ones in place:
+#
+#   pip install --force-reinstall --no-deps vllm==0.19.0
+#   pip install vllm==0.19.0
+#
+# If vllm.__version__ or torch.__version__ do not match what vLLM 0.19.0
+# expects after this, restart the Python process before continuing;
+# torch is cached on first import and will not pick up a version change
+# made after the interpreter has already started.
+
+inspect-ai
+openai
+datasets
+pandas
+numpy
+scipy
+math-verify

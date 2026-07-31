@@ -18,6 +18,9 @@ This README describes the whole project. The repository is organized as:
 `results/` and `notebooks/` are the project's output and analysis, not
 inputs the pipeline reads.
 
+`notebooks/04_analysis.ipynb`, the analysis of the results in `results/`,
+is in progress and will be added shortly.
+
 ## Sources
 
 - EA classification and dataset: Needham et al., "LLMs Often Know They Are

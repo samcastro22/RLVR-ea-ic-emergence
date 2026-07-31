@@ -53,19 +53,33 @@ git checkout main
 ## Getting the EA dataset
 
 `data/ea_dataset.json` is not included in this repository. Fetch it
-directly from the original source:
+directly from the original source. This requires your own HuggingFace
+account to have been granted access to the gated `jjpn2/eval_awareness`
+dataset (request access on the dataset's page if you have not already).
 
 ```bash
 pip install huggingface_hub
+
+# hf_xet has a known, currently open bug that causes a 401 error partway
+# through this specific download (huggingface/huggingface_hub#3266).
+# Uninstalling it forces the older, working HTTP download path instead.
+pip uninstall -y hf_xet
+
 python3 -c "
 from huggingface_hub import snapshot_download
-import zipfile, os
+import zipfile
 
-path = snapshot_download(repo_id='jjpn2/eval_awareness', repo_type='dataset')
-zip_path = [f for f in os.listdir(path) if f.endswith('.zip')][0]
-with zipfile.ZipFile(os.path.join(path, zip_path)) as z:
-    z.extractall('data', pwd=b'isthisreallythepassword')
+snapshot_download(
+    repo_id='jjpn2/eval_awareness',
+    repo_type='dataset',
+    token='YOUR_HF_TOKEN',
+    local_dir='eval_awareness'
+)
 "
+
+cd eval_awareness
+unzip -P "isthisreallythepassword" dataset.zip
+mv dataset.json ../data/ea_dataset.json
 ```
 
 See `notebooks/01_data_retrieval_and_exploration.ipynb` for the full

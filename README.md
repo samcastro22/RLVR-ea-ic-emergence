@@ -67,7 +67,6 @@ pip uninstall -y hf_xet
 
 python3 -c "
 from huggingface_hub import snapshot_download
-import zipfile
 
 snapshot_download(
     repo_id='jjpn2/eval_awareness',
@@ -101,12 +100,15 @@ pip install vllm==0.19.0
 ```
 
 Copy `.env.example` to `.env` and fill in real values, or export the same
-variables directly. `RLVR_BASE_PATH` should point at the repository root,
-one level up from `pipeline/`, since that is where `data/` and `results/`
-live:
+variables directly. `RLVR_BASE_PATH` must be an absolute path to the
+repository root, not a relative one. A relative path such as `..` will
+appear to work for simple file existence checks, but `inspect eval`
+resolves the paths it receives relative to the task file's own directory
+(`pipeline/tasks/`), not the directory the command was run from, and
+will fail to find `data/` even though it exists there:
 
 ```bash
-export RLVR_BASE_PATH=..
+export RLVR_BASE_PATH=/full/path/to/RLVR-ea-ic-emergence
 export OPENAI_API_KEY=...
 export HF_TOKEN=...   # only needed if the model repository requires auth
 ```
